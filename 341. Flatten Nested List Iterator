@@ -1,0 +1,68 @@
+from collections import deque
+class NestedIterator(object):
+
+    def __init__(self, nestedList):
+        # Initialize your data structure here.
+        self.queue = collections.deque()
+        for elem in nestedList:
+            if elem.isInteger():
+                self.queue.append(elem.getInteger())
+            else:
+                self.new_list = NestedIterator(elem.getList())
+                while self.new_list.hasNext():
+                    self.queue.append(self.new_list.next())
+        
+    # @return {int} the next element in the iteration
+    def next(self):
+        # Write your code here
+        return self.queue.popleft()
+        
+    # @return {boolean} true if the iteration has more element or false
+    def hasNext(self):
+        # Write your code here
+        if self.queue:
+            return True
+        return False
+       
+# class NestedIterator(object):
+
+#     def __init__(self, nestedList):
+#         """
+#         Initialize your data structure here.
+#         :type nestedList: List[NestedInteger]
+#         """
+#         self.next_elem = None
+#         self.stack = []
+#         for elem in reversed(nestedList):
+#             self.stack.append(elem)
+        
+
+#     def next(self):
+#         """
+#         :rtype: int
+#         """
+#         if self.next_elem == None:
+#             #load the next elem to next_elem from stack
+#             self.hasNext()
+#         #return next_elem and empty it
+#         temp, self.next_elem = self.next_elem, None
+#         return temp
+
+#     def hasNext(self):
+#         """
+#         :rtype: bool
+#         """
+#         if self.next_elem:
+#             return True
+        
+#         while self.stack:
+#             top = self.stack.pop()
+#             if top.isInteger():
+#                 self.next_elem = top.getInteger()
+#                 return True
+            
+#             #top is a list, put the elem into stack
+#             for elem in reversed(top.getList()):
+#                 self.stack.append(elem)
+        
+#         return False
