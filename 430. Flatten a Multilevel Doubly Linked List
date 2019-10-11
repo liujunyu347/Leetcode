@@ -1,0 +1,25 @@
+class Solution:
+    def flatten(self, head: 'Node') -> 'Node':
+        if not head:
+            return None
+        dummy = Node(0, None, head, None)
+        stack = []
+        stack.append(head)
+        prev_node = dummy
+        while stack:
+            cur = stack.pop()
+            #make connection with prev_node
+            cur.prev = prev_node
+            prev_node.next = cur
+            #if cur have next or child, put it in the stack, and delet the pointer
+            if cur.next:
+                stack.append(cur.next)
+                cur.next = None
+            if cur.child:
+                stack.append(cur.child)
+                cur.child = None
+            #update the prev_node
+            prev_node = cur
+            
+        dummy.next.prev = None
+        return dummy.next
