@@ -23,7 +23,7 @@ class Solution:
                 #     continue
                 #如果不是它的parent，说明是之前发现过的点, 更新当前点low_link为它能到的最低的low_link
                 if child != self.parent[node]:
-                    self.low_link[node] = min(self.low_link[child], self.low_link[node])
+                    self.low_link[node] = min(self.low_link[node], self.low_link[child])
                 
                     
     
