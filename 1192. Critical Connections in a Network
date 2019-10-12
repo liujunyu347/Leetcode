@@ -1,0 +1,48 @@
+from collections import defaultdict
+class Solution:
+    def dfs(self, node, graph):
+        self.low_link[node] = self.time
+        self.discovered[node] = self.time
+        self.time += 1
+        
+        for child in graph[node]:
+            
+            if not self.discovered[child]:
+                self.parent[child] = node
+                #dfs 每个跟它相连的点
+                self.dfs(child, graph)
+                #该点的low_link为它能到的最低的low_link
+                self.low_link[node] = min(self.low_link[node], self.low_link[child])
+                #如果跟它相连的点的low_link比发现它时还大，说明没有环=> critical connection 
+                if self.low_link[child] > self.discovered[node]:
+                    self.output.append([node, child])
+                    
+            #else 看看是否是parent
+            else:
+                # if self.parent[child] == node:
+                #     continue
+                #如果不是它的parent，说明是之前发现过的点, 更新当前点low_link为它能到的最低的low_link
+                if child != self.parent[node]:
+                    self.low_link[node] = min(self.low_link[child], self.low_link[node])
+                
+                    
+    
+    def criticalConnections(self, n: int, connections: List[List[int]]) -> List[List[int]]:
+        #build the graph
+        graph = defaultdict(list)
+        self.output = []
+        for v1, v2 in connections:
+            graph[v1].append(v2)
+            graph[v2].append(v1)
+            
+        self.low_link = [None] * n
+        self.discovered = [False] * n
+        self.parent = [None] * n
+        
+        self.time = 0
+        
+        for i in range(0, n, 1):
+            if not self.discovered[i]:
+                self.dfs(i, graph)
+                
+        return self.output
