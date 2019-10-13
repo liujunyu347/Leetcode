@@ -6,7 +6,6 @@ class Solution:
         self.visited[node] = True
         self.time += 1
         for child in graph[node]:
-            
             if not self.visited[child]:
                 self.parent[child] = node
                 #dfs 每个跟它相连的点
