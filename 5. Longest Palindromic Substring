@@ -1,0 +1,24 @@
+class Solution:
+    def expand_around_center(self, s, left, right):
+        while (left >= 0 and right < len(s) and s[left] == s[right]):
+            left -= 1
+            right += 1
+        #终止条件前左右已经加减，长度需-1
+        return right - left - 1
+    
+    
+    def longestPalindrome(self, s: str) -> str:
+        if not s or len(s) < 1:
+            return ""
+        start = 0
+        end = 0
+        for i in range(len(s)):
+            len1 = self.expand_around_center(s, i, i)
+            len2 = self.expand_around_center(s, i, i+1)
+            longer = max(len1, len2)
+            if longer > (end - start):
+                #longer -1是因为奇数是需要把单个的减掉再求
+                start = i - int((longer - 1) / 2)
+                end = i + int(longer / 2)
+                
+        return s[start:end+1]
