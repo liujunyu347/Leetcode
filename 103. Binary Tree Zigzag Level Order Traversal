@@ -1,0 +1,40 @@
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: A Tree
+    @return: A list of lists of integer include the zigzag level order traversal of its nodes' values.
+    """
+    def zigzagLevelOrder(self, root):
+        # write your code here
+        if not root:
+            return []
+        output = []
+        queue = collections.deque()
+        queue.append(root)
+        level = 1
+        while len(queue):
+            stack1 = []
+            stack2 = []
+            next_level_node = []
+            for node in queue:
+                if level % 2 == 1:
+                    stack1.append(node.val)
+                else:
+                    stack2.append(node.val)
+                if node.left:
+                    next_level_node.append(node.left)
+                if node.right:
+                    next_level_node.append(node.right)
+            while stack2:
+                stack1.append(stack2.pop())
+            output.append(stack1)
+            queue = next_level_node
+            level += 1
+        return output
