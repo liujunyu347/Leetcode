@@ -1,0 +1,25 @@
+from collections import deque
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        in_degree = {i: 0 for i in range(numCourses)}
+        course_to_require = {i: [] for i in range(numCourses)}
+        #creat and built in_degree and courses relationship
+        for courses in prerequisites:
+            course_to_require[courses[1]].append(courses[0])
+            in_degree[courses[0]] += 1
+        # print(in_degree)
+        #initial the queue
+        queue = deque([course for course in in_degree if in_degree[course] == 0])
+        count = 0
+        # print(in_degree)
+        # print(course_to_require)
+        # print(queue)
+        while queue:
+            cur = queue.popleft()
+            count += 1
+            for course in course_to_require[cur]:
+                in_degree[course] -= 1
+                if in_degree[course] == 0:
+                    queue.append(course)
+        # print(in_degree)
+        return numCourses == count
