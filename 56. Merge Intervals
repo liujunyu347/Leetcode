@@ -1,0 +1,23 @@
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        output = []
+        interval = []
+        ongoing = 0
+        for i in intervals:
+            interval.append([i[0], -1])
+            interval.append([i[1], 1])
+        
+        interval.sort()
+        # print(interval)
+        temp = []
+        for pair in interval:
+            ongoing += pair[1]
+            if len(temp) == 0:
+                temp.append(pair[0])
+                
+            if ongoing == 0:
+                temp.append(pair[0])
+                output.append(temp)
+                temp = []
+                
+        return output
