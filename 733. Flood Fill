@@ -1,0 +1,20 @@
+class Solution:
+    # def is_inbound(self, image, nr, nc):
+    #     length = len(image)
+    #     wide = len(image[0])
+    #     return 0 <= nr < length and 0 <= nc < wide
+    # 不需要is_valid 用新老颜色和边界来控制
+    def dfs(self, image, sr, sc, oldColor, newColor):
+        if not (0<= sr < len(image) and 0 <= sc < len(image[0])):
+            return
+        if image[sr][sc] == newColor or image[sr][sc] != oldColor:
+            return
+        image[sr][sc] = newColor
+        for d in [(0,1), (0,-1), (-1,0), (1,0)]:
+            nr, nc = sr + d[0], sc + d[1]
+            self.dfs(image, nr, nc, oldColor, newColor)
+                
+    def floodFill(self, image: List[List[int]], sr: int, sc: int, newColor: int) -> List[List[int]]:
+        oldColor = image[sr][sc]
+        self.dfs(image, sr, sc, oldColor, newColor)
+        return image
