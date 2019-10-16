@@ -13,12 +13,27 @@ class Solution:
             else:
                 d[nums[i]] = i
         
-#         for index1 in range(len(nums)):
-#             value = target - nums[index1]
-#             try:
-#                 index2 = nums.index(value)
-#                 if index1 != index2:
-#                     return [index1,index2]
-#             except:
-#                 pass
+    def twoSum(self, numbers, target):
+        # write your code here
+        if not numbers:
+            return -1
+        nums = sorted(numbers)
+        left, right = 0, len(numbers) - 1 
+        while left < right:
+            if nums[left] + nums[right] == target:
+                i = numbers.index(nums[left])
+                j = numbers.index(nums[right])
+                if i == j:  ##两个重复的数字时候，index只能返回最小的指针
+                    k = numbers[i+1:].index(nums[right]) + i + 1
+                    return [i, k]
+                elif i < j:
+                    return [i, j] 
+                else:
+                    return [j, i]
+                #return [numbers.index(nums[left]), numbers.index(nums[right])]
+            if nums[left] + nums[right] < target:
+                left += 1 
+            if nums[left] + nums[right] > target:
+                right -= 1 
+        return -1
                     
