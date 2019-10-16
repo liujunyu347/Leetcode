@@ -1,0 +1,70 @@
+class LinkedNode:
+    
+    def __init__(self, key=None, value=None, next=None):
+        self.key = key
+        self.value = value
+        self.next = next
+
+class LRUCache:
+    """
+    @param: capacity: An integer
+    """
+    def __init__(self, capacity):
+        # do intialization if necessary
+        self.key_to_prev_node = dict()
+        self.dummy = LinkedNode()
+        self.tail = self.dummy
+        self.capacity = capacity
+        
+    def append(self, node):
+        self.key_to_prev_node[node.key] = self.tail
+        self.tail.next = node
+        self.tail = node
+    
+    # change "prev->node->next...->tail"
+    # to "prev->next->...->tail->node"
+    def move_to_tail(self, prev_node):
+        node = prev_node.next
+        if node == self.tail:
+            return
+        prev_node.next = node.next
+        if node.next is not None:
+            self.key_to_prev_node[node.next.key] = prev_node#相当于next的前一个node指会prev
+            node.next = None
+        self.append(node)
+    
+    def pop_front(self):
+        head = self.dummy.next
+        del self.key_to_prev_node[head.key]
+        self.dummy.next = head.next
+        self.key_to_prev_node[head.next.key] = self.dummy
+        
+    """
+    @param: key: An integer
+    @return: An integer
+    """
+    def get(self, key):
+        # write your code here
+        if key not in self.key_to_prev_node:
+            return -1
+
+        self.move_to_tail(self.key_to_prev_node[key])
+        
+        return self.key_to_prev_node[key].next.value
+
+    """
+    @param: key: An integer
+    @param: value: An integer
+    @return: nothing
+    """
+    def set(self, key, value):
+        # write your code here
+        if key in self.key_to_prev_node:
+            self.move_to_tail(self.key_to_prev_node[key])
+            self.key_to_prev_node[key].next.value = value
+        else:
+            self.append(LinkedNode(key, value))
+            # print(self.key_to_prev_node)
+            if len(self.key_to_prev_node) > self.capacity:
+                # print("pop")
+                self.pop_front()
