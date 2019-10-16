@@ -1,0 +1,38 @@
+"""
+Definition of ListNode
+class ListNode(object):
+
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+"""
+import heapq
+class Solution:
+    """
+    @param lists: a list of ListNode
+    @return: The head of one sorted list.
+    """
+    def mergeKLists(self, lists):
+        # write your code here
+        pq = []
+        for i in range(len(lists)):#先把每个list的头放进heap 维护一个k长的min-heap
+            if lists[i] is not None:
+                heapq.heappush(pq, (lists[i].val, i))
+                lists[i] = lists[i].next
+                # print(lists[i].val)
+        # print(pq)
+        
+        dummy = ListNode(None)
+        res = dummy
+        while pq:#每从heap拿一个数出来放进结果就从改这个数的list拿下一个数放进min-heap
+            next_num, next_list = heapq.heappop(pq)
+            if lists[next_list] is not None:
+                heapq.heappush(pq, (lists[next_list].val, next_list))
+                lists[next_list] = lists[next_list].next
+            
+            dummy.next = ListNode(next_num)
+            dummy = dummy.next
+            
+        return res.next
+        
+
