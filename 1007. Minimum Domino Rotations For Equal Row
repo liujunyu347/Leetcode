@@ -1,0 +1,32 @@
+class Solution:
+    def minDominoRotations(self, A: List[int], B: List[int]) -> int:
+        if len(A) != len(B):
+            return -1
+        if len(A) == 0:
+            return 0
+        
+        switchA, switchB = 0, 0
+        for i in range(len(A)):
+            if (A[i] == A[0] or B[i] == A[0]):
+                if A[i] != A[0]:
+                    switchA += 1
+                if B[i] != A[0]:
+                    switchB += 1
+                if i == (len(A)-1):
+                    return min(switchA, switchB)
+            else:
+                break
+
+        switchA, switchB = 0, 0
+        for i in range(len(A)):
+            if (A[i] == B[0] or B[i] == B[0]):
+                if A[i] != B[0]:
+                    switchA += 1
+                if B[i] != B[0]:
+                    switchB += 1
+                if i == (len(A)-1):
+                    print(switchA, switchB)
+                    return min(switchA, switchB)
+            else:
+                break
+        return -1
