@@ -1,0 +1,23 @@
+class Solution:
+    def longestPalindrome(self, s: str) -> int:
+        if not s:
+            return 0
+            
+        count = dict()
+        res = 0
+        single = 0
+        for i in range(len(s)):
+            if s[i] in count:
+                count[s[i]] += 1
+            else:
+                count[s[i]] = 1
+        print(count)
+
+        for char in count:
+            if count[char]%2 == 0:
+                res += count[char]
+            else:
+                res += count[char]-1
+                single = 1
+        
+        return res + single
