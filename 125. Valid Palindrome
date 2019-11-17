@@ -1,0 +1,30 @@
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        if not s:
+            return True
+        left = 0
+        right = len(s)-1
+        while left < len(s) and right > 0 and left <= right:
+            while not s[left].isalpha():
+                print(s[left])
+                if s[left].isnumeric():
+                    break
+                left += 1
+                if left == len(s):
+                    return True
+                
+            while right > 0 and not s[right].isalpha():
+                if s[right].isnumeric():
+                    break
+                right -= 1
+                
+            # print(s[left].lower())
+            # print(s[right].lower())
+            if s[left] == s[right] or s[left].lower() == s[right].lower():
+                left += 1
+                right -=1
+            else:
+                return False
+                
+
+        return True
