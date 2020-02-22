@@ -1,0 +1,62 @@
+class Solution {
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        int left = 0;
+        List<String> res = new ArrayList();
+        
+        while (left < words.length){
+            int right = findRight(left, words, maxWidth);
+            String temp = addSpace(left, right, words, maxWidth);
+            res.add(temp);
+            // System.out.println(left + " " + right);
+            left = right + 1;
+            
+        }
+        return res;
+    }
+    
+    public int findRight(int left, String[] words, int maxWidth){
+        int right = left;
+        int len = 0;
+        while (right < words.length && len+words[right].length() <= maxWidth){
+            len += words[right++].length()+1;
+            // System.out.println(len);
+        }
+        return right-1;
+    }
+    
+    public String addSpace(int left, int right, String[] words, int maxWidth){
+        if (left == right){
+            return words[left] + blank(maxWidth - words[left].length());
+        }
+        StringBuilder sb = new StringBuilder();
+        int len = 0;
+        for (int i=left;i<=right;i++){
+            len += words[i].length();
+        }
+
+        boolean lastWord = right == words.length - 1;
+        int totalGap = right - left;
+        int totalSpace = maxWidth - len;
+        // System.out.println(totalSpace);
+        
+        String space = lastWord ? " " : blank(totalSpace/totalGap);
+        int remain = lastWord ? 0 : totalSpace%totalGap;
+        for (int j=left;j<=right;j++){
+            //the empty slots on the left will be assigned more spaces than the slots on the right
+            sb.append(words[j]).append(space).append(remain-- > 0 ? " " : "");
+        }
+        String res = sb.toString().trim();
+        return res + blank(maxWidth - res.length());
+    }
+    
+    // public String padTail(String front, int maxWidth){
+    //     // System.out.println(maxWidth+ " " + front.length() + " :" + front);
+    //     return front + blank(maxWidth - front.length());
+    // }
+    
+    public String blank(int len){
+        return new String(new char[len]).replace('\0', ' ');
+    }
+    
+    
+}
